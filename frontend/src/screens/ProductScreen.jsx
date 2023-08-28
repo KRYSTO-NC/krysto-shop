@@ -38,6 +38,9 @@ const ProductScreen = () => {
           <ListGroup variant="flush ">
             <ListGroup.Item>{product.name}</ListGroup.Item>
             <ListGroup.Item>
+              <strong>{product.subname} </strong>
+              </ListGroup.Item>
+            <ListGroup.Item>
               <Rating
                 value={product.rating}
                 text={`${product.numReviews} avis`}
