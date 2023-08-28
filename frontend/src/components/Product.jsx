@@ -1,5 +1,4 @@
 import { Card } from "react-bootstrap"
-import { FaRegClosedCaptioning } from "react-icons/fa"
 import { Link } from "react-router-dom"
 import Rating from './Rating';
 
