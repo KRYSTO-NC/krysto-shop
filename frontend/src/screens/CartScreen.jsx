@@ -11,7 +11,7 @@ import {
 } from "react-bootstrap";
 import { FaTrash } from "react-icons/fa";
 import Message from "../components/Message";
-import { addToCart } from "../slices/cartSlice";
+import { addToCart , removeFromCart } from "../slices/cartSlice";
 
 
 const CartScreen = () => {
@@ -24,6 +24,12 @@ const CartScreen = () => {
   const addToCartHandler = async (product, qty) => {
     dispatch(addToCart({...product, qty}));
     navigate("/cart");
+  }
+  const removeFromCartHandler = async (id) => {
+    dispatch(removeFromCart(id));
+  }
+  const checkoutHandler = () => {
+   navigate('/login?redirect=shipping')
   }
 
   return (
@@ -62,7 +68,7 @@ const CartScreen = () => {
                     </Form.Control>
                   </Col>
                   <Col md={2}>
-                    <Button type="button" variant="light">
+                    <Button onClick={() => removeFromCartHandler(item._id)} type="button" variant="light">
                       <FaTrash />
                     </Button>
                   </Col>
@@ -83,7 +89,12 @@ const CartScreen = () => {
               {cartItems.reduce((acc, item) => acc + item.qty * item.price, 0).toFixed(2)} XPF
             </ListGroup.Item>
             <ListGroup.Item>
-              <Button type="button" className="btn-block" disable={cartItems.length === 0}> payer </Button>
+              <Button
+               type="button"
+              className="btn-block"
+              disable={cartItems.length === 0}
+              onClick={checkoutHandler}
+              >Procéder au paiement</Button>
             </ListGroup.Item>
           </ListGroup>
         </Card>
