@@ -31,7 +31,7 @@ const products = [
     
     name: "Peignes grand modèle",
     subname:"Démêlez Vos Cheveux, Pas Votre Conscience Écologique",
-    image: "/images/large_comb.jpg",
+    image: "/images/large_comb.png",
     description:
     "Notre Peigne Grand Modèle n'est pas seulement un outil de soin capillaire, c'est un symbole de votre engagement pour un monde plus vert. Chaque peigne est soigneusement fabriqué en Nouvelle-Calédonie à partir de plastique 100% recyclé, collecté auprès de nos partenaires locaux engagés dans la durabilité.",
     brand: "Krysto",
@@ -41,6 +41,7 @@ const products = [
     rating: 3,
     numReviews: 12,
   },
+  
   {
     
     name: "Perles",
@@ -58,7 +59,7 @@ const products = [
   {
     
     name: "Porte-savons",
-    image: "/images/porte_savons.jpg",
+    image: "/images/porte_savons.png",
     subname:"Un Havre de Propreté, Un Geste pour la Planète",
     description:
     "Nos Porte-Savons Écologiques ne sont pas juste un accessoire de salle de bain, ils sont un acte de responsabilité environnementale. Chaque porte-savon est soigneusement fabriqué à partir de plastique 100% recyclé, collecté localement en partenariat avec des associations et des entreprises engagées en faveur de la durabilité.",

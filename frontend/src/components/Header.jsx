@@ -17,10 +17,10 @@ const Header = () => {
                     <Navbar.Collapse id='basic-navabar-nav'>
                             <Nav className='ms-auto'>
                               <LinkContainer to={'/cart'}>
-                                <Nav.Link> <FaShoppingCart/>Cart</Nav.Link>
+                                <Nav.Link> <FaShoppingCart/> Mon panier</Nav.Link>
                               </LinkContainer>
                               <LinkContainer to={'/login'}>
-                                <Nav.Link> <FaUser/>Signin</Nav.Link>
+                                <Nav.Link> <FaUser/> S'enregistrer</Nav.Link>
                               </LinkContainer>
                             </Nav>
                     </Navbar.Collapse>
