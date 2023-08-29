@@ -1,11 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { updatedCart } from "../utils/cartUtils";
 
-
 const initialState = localStorage.getItem("cart")
   ? JSON.parse(localStorage.getItem("cart"))
   : { cartItems: [] };
-
 
 const cardSlice = createSlice({
   name: "cart",
@@ -23,7 +21,7 @@ const cardSlice = createSlice({
         state.cartItems = [...state.cartItems, item];
       }
 
-        return updatedCart(state);
+      return updatedCart(state);
     },
   },
 });
