@@ -24,8 +24,8 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    subname: {  type: String, required: true },
-    
+    subname: { type: String, required: true },
+
     service: {
       type: Boolean,
       default: false,
