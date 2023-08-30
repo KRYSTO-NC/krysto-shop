@@ -21,8 +21,8 @@ const PlaceOrderScreen = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
-  const [createOrder, { error, isLoading, data }] = useCreateOrderMutation();
-  
+  const [createOrder, { error, isLoading}] = useCreateOrderMutation();
+
   useEffect(() => {
     if (!cart.shippingAddress.address) {
       navigate("/shipping");
@@ -42,6 +42,7 @@ const PlaceOrderScreen = () => {
         shippingPrice: cart.shippingPrice,
         totalPrice: cart.totalPrice,
       }).unwrap();
+   
       dispatch(clearCartItems());
       navigate(`/order/${res._id}`);
     } catch (error) {
