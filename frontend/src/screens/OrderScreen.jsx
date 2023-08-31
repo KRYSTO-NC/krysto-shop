@@ -84,12 +84,16 @@ const OrderScreen = () => {
   }
 
 
+  const orderPriceEuros = order && typeof order.totalPrice === 'number' 
+  ? Number((order.totalPrice / 119.33174).toFixed(2))
+  : 0;
+
   function createOrder(data, actions) {
     return actions.order.create({
       purchase_units: [
         {
           amount: {
-            value: order.totalPrice,
+            value: orderPriceEuros,
           },
         },
       ],
@@ -190,6 +194,7 @@ const OrderScreen = () => {
                 <Row>
                   <Col>Total</Col>
                   <Col>{order.totalPrice} XPF</Col>
+                  <Col>{orderPriceEuros}€</Col>
                 </Row>
               </ListGroup.Item>
 
@@ -201,13 +206,13 @@ const OrderScreen = () => {
                     <Loader />
                   ) : (
                     <div>
-                      {/* <Button
+                      <Button
                         onClick={onApproveTest}
                         style={{ marginBottom: "10px" }}
                       >
                         {" "}
                         tester le paiment
-                      </Button> */}
+                      </Button>
 
                       <div>
                         <PayPalButtons
