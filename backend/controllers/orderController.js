@@ -1,5 +1,5 @@
-import asyncHandler from "../middleware/asyncHandler.js";
-import Order from "../models/orderModel.js";
+import asyncHandler from '../middleware/asyncHandler.js'
+import Order from '../models/orderModel.js'
 
 // @desc Create new order
 // @route POST /api/orders
@@ -13,11 +13,11 @@ const addOrderItems = asyncHandler(async (req, res) => {
     taxPrice,
     shippingPrice,
     totalPrice,
-  } = req.body;
+  } = req.body
 
   if (orderItems && orderItems.length === 0) {
-    res.status(400);
-    throw new Error("aucun produit trouvé");
+    res.status(400)
+    throw new Error('aucun produit trouvé')
   } else {
     const order = new Order({
       orderItems: orderItems.map((x) => ({
@@ -32,74 +32,84 @@ const addOrderItems = asyncHandler(async (req, res) => {
       taxPrice,
       shippingPrice,
       totalPrice,
-    });
+    })
 
-    const createdOrder = await order.save();
+    const createdOrder = await order.save()
 
-    res.status(201).json(createdOrder);
+    res.status(201).json(createdOrder)
   }
-});
+})
 
 // @desc Get logged in user orders
 // @route GET /api/orders/myorders
 // @access Private
 const getMyOrders = asyncHandler(async (req, res) => {
-    const orders = await Order.find({ user: req.user._id });
-    res.status(200).json(orders);
-});
+  const orders = await Order.find({ user: req.user._id })
+  res.status(200).json(orders)
+})
 
 // @desc Get order by ID
 // @route GET /api/orders/:id
 // @access Private
 const getOrderById = asyncHandler(async (req, res) => {
-    const order = await Order.findById(req.params.id).populate('user', 'name email');
+  const order = await Order.findById(req.params.id).populate(
+    'user',
+    'name email',
+  )
 
-    if(order) {
-        res.status(200).json(order);
-    } else {
-        res.status(404);
-        throw new Error('Commande introuvable');
-    }
-});
-
-
-
+  if (order) {
+    res.status(200).json(order)
+  } else {
+    res.status(404)
+    throw new Error('Commande introuvable')
+  }
+})
 
 // @desc Update order to paid
 // @route PUT /api/orders/:id/pay
 // @access Private
 const updateOrderToPaid = asyncHandler(async (req, res) => {
-  const order = await Order.findById(req.params.id);
-  if(order){
-    order.isPaid = true;
-    order.paidAt = Date.now();
+  const order = await Order.findById(req.params.id)
+  if (order) {
+    order.isPaid = true
+    order.paidAt = Date.now()
     order.paymentResult = {
-      id:req.body.id,
-      status:req.body.status,
-      update_time:req.body.update_time,
-      email_address:req.body.payer.email_address
+      id: req.body.id,
+      status: req.body.status,
+      update_time: req.body.update_time,
+      email_address: req.body.payer.email_address,
     }
-    const updatedOrder = await order.save();
-    res.json(updatedOrder);
+    const updatedOrder = await order.save()
+    res.json(updatedOrder)
   } else {
-    res.status(404);
-    throw new Error('Commande introuvable');  
+    res.status(404)
+    throw new Error('Commande introuvable')
   }
-});
+})
 
 // @desc Update order to delivered
 // @route PUT /api/orders/:id/delever
 // @access Private/Admin
 const updateOrderToDelivered = asyncHandler(async (req, res) => {
-  res.send("update order to delivered");
-});
+  const order = await Order.findById(req.params.id)
+  if (order) {
+    order.isDelivered = true
+    order.deliveredAt = Date.now()
+    const updatedOrder = await order.save()
+    res.status(200).json(updatedOrder)
+  } else {
+    res.status(404)
+    throw new Error('Commande introuvable')
+  }
+})
 
 // @desc all orders
 // @route GET /api/orders/:id/delever
 // @access Private/Admin
 const getOrders = asyncHandler(async (req, res) => {
-  res.send("get all orders");
-});
+  const orders = await Order.find({}).populate('user', 'id name')
+  res.status(200).json(orders)
+})
 
 export {
   addOrderItems,
@@ -108,4 +118,4 @@ export {
   updateOrderToPaid,
   updateOrderToDelivered,
   getOrders,
-};
+}
