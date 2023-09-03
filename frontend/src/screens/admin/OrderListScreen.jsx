@@ -7,9 +7,7 @@ import { useGetOrdersQuery } from "../../slices/ordersApiSlice"
 
 const OrderListScreen = () => {
   const { data: orders, isLoading, error } = useGetOrdersQuery()
-  console.log('====================================');
-  console.log(orders);
-  console.log('====================================');
+
   return (
     <>
       <h1>Commandes</h1>
