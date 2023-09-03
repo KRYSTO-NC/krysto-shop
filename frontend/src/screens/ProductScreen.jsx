@@ -18,7 +18,7 @@ import { useGetProductDetailsQuery , useCreateReviewMutation } from "../slices/p
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { addToCart } from "../slices/cartSlice";
-import { set } from "mongoose";
+
 
 const ProductScreen = () => {
   const { id: productId } = useParams();
@@ -58,7 +58,7 @@ const submitHandler = async (e) => {
     setComment('')
   } catch (error) {
     toast.error(error?.data?.message || error?.error)
-    
+
     
   }
 }

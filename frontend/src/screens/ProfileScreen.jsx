@@ -7,7 +7,7 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { FaTimes } from 'react-icons/fa'
 import { useProfileMutation } from '../slices/userApiSlice'
-import { useGetUserQuery } from '../slices/authSlice'
+
 import { setCredentials } from '../slices/authSlice'
 import { useGetMyOrdersQuery } from '../slices/ordersApiSlice'
 
