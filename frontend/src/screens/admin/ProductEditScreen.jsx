@@ -95,6 +95,7 @@ const ProductEditScreen = () => {
       <FormContainer>
         <h1>Modifier le produit</h1>
         {loadingUpdate && <Loader />}
+        {loadingUpload && <Loader />}
         {isLoading ? (
           <Loader />
         ) : error ? (
