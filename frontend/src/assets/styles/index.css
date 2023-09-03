@@ -51,7 +51,15 @@ table th {
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
 }
-
+.custom-image {
+  width: 100%; /* Définissez la largeur souhaitée */
+  height: 400px; /* La hauteur s'ajustera automatiquement pour maintenir le ratio d'aspect de l'image */
+  max-width: 300px; /* Facultatif : définissez une largeur maximale pour éviter que les images ne deviennent trop grandes */
+  display: block; /* Assurez-vous que l'image occupe tout l'espace disponible dans son conteneur */
+  margin: 0 auto; /* Centrez l'image horizontalement dans son conteneur */
+  object-fit: contain;
+  margin-bottom: 100px;
+}
 
 .header-logo{
   height: 3rem;

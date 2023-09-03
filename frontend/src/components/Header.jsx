@@ -5,7 +5,9 @@ import { LinkContainer } from 'react-router-bootstrap'
 import { useSelector , useDispatch } from 'react-redux'
 import { useLogoutMutation } from '../slices/userApiSlice'
 import {logout} from '../slices/authSlice'
+import SearchBox from './SearchBox'
 import logo from '../assets/logo_krysto.png'
+import { resetCart } from '../slices/cartSlice'
 
 const Header = () => {
   const { cartItems } = useSelector((state) => state.cart)
@@ -21,6 +23,7 @@ const Header = () => {
 
       await logoutApiCall().unwrap()
       dispatch(logout())
+      dispatch(resetCart())
       navigate('/login')
     } catch (error) {
       console.log(error);
@@ -39,6 +42,7 @@ const Header = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navabar-nav">
             <Nav className="ms-auto">
+            <SearchBox />
               <LinkContainer to={'/cart'}>
                 <Nav.Link>
                   {' '}
