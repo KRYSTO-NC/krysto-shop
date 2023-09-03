@@ -11,12 +11,14 @@ import {
   Form,
   ListGroupItem,
 } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import { useDispatch , useSelector } from "react-redux";
+import {toast} from 'react-toastify'
 import Rating from "../components/Rating";
-import { useGetProductDetailsQuery } from "../slices/productsApiSlice";
+import { useGetProductDetailsQuery , useCreateReviewMutation } from "../slices/productsApiSlice";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { addToCart } from "../slices/cartSlice";
+import { set } from "mongoose";
 
 const ProductScreen = () => {
   const { id: productId } = useParams();
@@ -25,17 +27,42 @@ const ProductScreen = () => {
 
   const [qty, setQty] = useState(1);
 
+  const [rating , setRating] = useState(0)
+  const [comment , setComment] = useState('')
+
 
   const {
     data: product,
     isLoading,
+    refetch,
     error,
   } = useGetProductDetailsQuery(productId);
+
+  const [createReview, { isLoading: loadingProductReview }] = useCreateReviewMutation();
+
+  const { userInfo } = useSelector((state) => state.auth);
 
   const addToCartHandler = () => {
     dispatch(addToCart({...product, qty}));
     navigate('/cart')
    }
+
+const submitHandler = async (e) => {
+  e.preventDefault()
+ 
+  try {
+    await createReview({productId , rating , comment}).unwrap()
+    refetch()
+    toast.success('Avis ajouté')
+    setRating(0)
+    setComment('')
+  } catch (error) {
+    toast.error(error?.data?.message || error?.error)
+    
+    
+  }
+}
+
 
   return (
     <>
@@ -47,6 +74,7 @@ const ProductScreen = () => {
       ) : error ? (
         <Message variant='danger'>{error?.data?.message || error.error}</Message>
       ) : (
+        <>
         <Row>
           <Col md={5}>
             <Image src={product.image} alt={product.name} fluid />
@@ -126,6 +154,54 @@ const ProductScreen = () => {
             <Card></Card>
           </Col>
         </Row>
+
+        <Row className="review">
+          <Col md={6}>
+            <h2>Avis</h2>
+            {product.reviews.length === 0 && <Message>Aucun avis sur ce produit</Message>}
+            <ListGroup variant="flush">
+              {product.reviews.map((review) => (
+                <ListGroup.Item key={review._id}>
+                  <strong>{review.name}</strong>
+                  <Rating value={review.rating} color="#f8e825" />
+                  <p>{new Date(review.createdAt).toLocaleDateString()}</p>
+                  <p>{review.comment}</p>
+                </ListGroup.Item>
+              ))}
+              <ListGroup.Item>
+                <h2>Donnez votre avis</h2>
+                {loadingProductReview && <Loader/>}
+                {userInfo ? (
+                  <Form onSubmit={submitHandler}>
+                    <Form.Group controlId="rating">
+                      <Form.Control as='select'
+                      value={rating}
+                      onChange={(e) => setRating(e.target.value)}
+                      
+                      >
+                        <option value="">Selectionnez...</option>
+                        <option value="1">1 - Mauvais</option>
+                        <option value="2">2 - Passable</option>
+                        <option value="3">3 - Bien</option>
+                        <option value="4">4 - Très bien</option>
+                        <option value="5">5 - Excellent</option>
+                      </Form.Control>
+                    </Form.Group>
+                    <Form.Group controlId="comment">
+                      <Form.Control className="my-2" as="textarea" row="3" value={comment} onChange={(e) => setComment(e.target.value)}></Form.Control>
+                    </Form.Group>
+                    <Button  disabled={loadingProductReview} type="submit" variant="primary">
+                      Envoyer
+                    </Button>
+                  </Form>
+                ): (
+                  <Message>Veuillez vous <Link to="/login">connecter</Link> pour donner votre avis</Message>
+                )}
+              </ListGroup.Item>
+            </ListGroup>
+          </Col>
+        </Row>
+        </>
       )}
     </>
   );
