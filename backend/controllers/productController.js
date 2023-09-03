@@ -40,12 +40,62 @@ const createProduct = asyncHandler(async (req, res) => {
     description: 'Sample description',
   })
 
-  console.log('====================================')
-  console.log('product', product)
-  console.log('====================================')
-
   const createdProduct = await product.save()
   res.status(201).json(createdProduct)
 })
 
-export { getProducts, getProductById, createProduct }
+// @desc update a product
+// @route PUT /api/products
+// @access Private/Admin
+const updateProduct = asyncHandler(async (req, res) => {
+  const {
+    name,
+    subname,
+    price,
+    description,
+    image,
+    brand,
+    category,
+    countInStock,
+  } = req.body
+
+  const product = await Product.findById(req.params.id)
+  if (product) {
+    product.name = name
+    product.subname = subname
+    product.price = price
+    product.description = description
+    product.image = image
+    product.brand = brand
+    product.category = category
+    product.countInStock = countInStock
+
+    const updatedProduct = await product.save()
+    res.status(201).json(updatedProduct)
+  } else {
+    res.status(404)
+    throw new Error('Produit non trouvé')
+  }
+})
+
+// @desc delete a product
+// @route DELETE /api/products
+// @access Private/Admin
+const deleteProduct = asyncHandler(async (req, res) => {
+  const product = await Product.findById(req.params.id)
+  if (product) {
+    await product.deleteOne({ _id: product._id })
+    res.status(200).json({ message: 'Produit supprimé' })
+  } else {
+    res.status(404)
+    throw new Error('Produit non trouvé')
+  }
+})
+
+export {
+  getProducts,
+  getProductById,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+}

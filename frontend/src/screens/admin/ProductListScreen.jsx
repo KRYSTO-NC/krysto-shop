@@ -1,22 +1,39 @@
 import { LinkContainer } from 'react-router-bootstrap'
 import { Table, Button, Row, Col } from 'react-bootstrap'
-import { FaTimes, FaEdit, FaTrash } from 'react-icons/fa'
+import { FaEdit, FaTrash } from 'react-icons/fa'
 import Message from '../../components/Message'
 import Loader from '../../components/Loader'
 import {
   useGetProductsQuery,
   useCreateProductMutation,
+  useDeleteProductMutation
 } from '../../slices/productsApiSlice'
 import { toast } from 'react-toastify'
 
 const ProductListScreen = () => {
   const { data: products, isLoading, error, refetch } = useGetProductsQuery()
+
+
   const [
     createProduct,
     { isLoading: loadingCreate },
   ] = useCreateProductMutation()
 
-  const deleteHandler = (id) => {}
+  const [deleteProduct, { isLoading: loadingDelete }] = useDeleteProductMutation()
+
+  const deleteHandler = async (id) => {
+    if (window.confirm('Voulez-vous supprimer ce produit ?')) {
+
+        try {
+           await  deleteProduct(id)
+            toast.success('Produit supprimé avec succès')
+            refetch()
+        } catch (error) {
+            toast.error(error?.data?.message || error?.message)
+        }
+     
+    }
+  }
 
   const createProductHandler = async () => {
     if (window.confirm('Voulez-vous créer un nouveau produit ?')) {
@@ -43,6 +60,7 @@ const ProductListScreen = () => {
         </Col>
       </Row>
       {loadingCreate && <Loader />}
+        {loadingDelete && <Loader />}
       {isLoading ? (
         <Loader />
       ) : error ? (
@@ -69,7 +87,7 @@ const ProductListScreen = () => {
                   <td>{product.category}</td>
                   <td>{product.brand}</td>
                   <td>
-                    <LinkContainer to={`/admin/product/${product._id}/edit`}>
+                    <LinkContainer to={`/admin/products/${product._id}/edit`}>
                       <Button variant="light" className="btn-sm mx-2">
                         <FaEdit />
                       </Button>
